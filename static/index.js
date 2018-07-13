@@ -99,13 +99,17 @@ function moveItem(event) {
 }
 
 function showNumber() {
-    leftP.innerHTML = "<b>number of books in green box: " + arrLeft.length + "</b>";
-    rightP.innerHTML = "<b>number of books in red box: " + (count - arrLeft.length) + "</b>";
+    let leftCount = arguments.length ? arguments[0] : arrLeft.length;
+    let rightCount = arguments.length ? arguments[1] : (count - arrLeft.length);
+    leftP.innerHTML = "<b>number of books in green box: " + leftCount + "</b>";
+    rightP.innerHTML = "<b>number of books in red box: " + rightCount + "</b>";
 }
 
 function search() {
     let str = document.getElementById("search").value.toUpperCase();
     let items = document.getElementsByClassName("item");
+    let leftNumber = 0;
+    let rightNumber = 0;
     for (let i = 0; i < items.length; i++) {
         let author = items[i].querySelectorAll("div.title span");
         let startName = author[author.length - 1].innerText.lastIndexOf(":");
@@ -113,9 +117,12 @@ function search() {
 
         if (authorName.toUpperCase().indexOf(str) > -1) {
             items[i].style.display = "";
+            (items[i].parentElement === left) ? leftNumber++ : rightNumber++;
+
         } else {
             items[i].style.display = "none";
         }
     }
+    showNumber(leftNumber, rightNumber);
 }
 
